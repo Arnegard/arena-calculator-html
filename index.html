@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arena Formula Calculator</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input { width: 100%; padding: 10px; font-size: 16px; border-radius: 10px; border: 1px solid #ccc; }
+    button { margin-top: 12px; padding: 10px 14px; font-size: 16px; border-radius: 10px; border: 1px solid #ccc; cursor: pointer; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .out { margin-top: 12px; padding: 12px; background: #f6f6f6; border-radius: 10px; }
+    .small { color: #555; font-size: 14px; margin-top: 8px; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Arena Formula Calculator</h1>
+
+  <div class="card">
+    <label for="rInput">Enter r</label>
+    <input id="rInput" type="text" inputmode="decimal" placeholder="e.g. 1200 or 1200,5" />
+
+    <div class="row">
+      <button id="calcBtn">Calculate</button>
+      <button id="clearBtn" type="button">Clear</button>
+    </div>
+
+    <div class="out" id="output">p = —</div>
+    <div class="small">
+      Formula:
+      <code>p = ((1651.94 - 475) / (1 + 2500000 * e^(-0.009*r)) + 475) * 1.5</code>
+    </div>
+  </div>
+
+  <script>
+    function calculateP(r) {
+      return ((1651.94 - 475) / (1 + 2500000 * Math.exp(-0.009 * r)) + 475) * 1.5;
+    }
+
+    const rInput = document.getElementById("rInput");
+    const output = document.getElementById("output");
+    const calcBtn = document.getElementById("calcBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    function parseNumber(text) {
+      // Allow Swedish comma decimals: "12,5"
+      const normalized = text.trim().replace(",", ".");
+      const value = Number(normalized);
+      return Number.isFinite(value) ? value : null;
+    }
+
+    function doCalc() {
+      const r = parseNumber(rInput.value);
+      if (r === null) {
+        output.textContent = "p = Invalid number. Please enter a valid r.";
+        return;
+      }
+      const p = calculateP(r);
+      output.textContent = `p = ${p.toFixed(4)}`;
+    }
+
+    calcBtn.addEventListener("click", doCalc);
+
+    clearBtn.addEventListener("click", () => {
+      rInput.value = "";
+      output.textContent = "p = —";
+      rInput.focus();
+    });
+
+    rInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doCalc();
+    });
+  </script>
+</body>
+</html>
