@@ -186,7 +186,7 @@
 
     function renderResult(r) {
       const p = calculateP(r);
-      output.textContent = `p = ${p.toFixed(4)}`;
+      output.textContent = `Raiting = ${p.toFixed(4)}`;
     }
 
     // Dark mode (remembered)
@@ -217,7 +217,7 @@
     rInput.addEventListener("input", () => {
       const r = parseNumber(rInput.value);
       if (r === null) {
-        output.textContent = "p = —";
+        output.textContent = "Raiting = —";
         return;
       }
       const min = Number(rSlider.min);
@@ -228,7 +228,7 @@
 
     clearBtn.addEventListener("click", () => {
       rInput.value = "";
-      output.textContent = "p = —";
+      output.textContent = "Raiting = —";
       rSlider.value = "1200";
       rInput.focus();
     });
